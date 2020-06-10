@@ -1,110 +1,118 @@
 <section class="section-margin--small mb-5">
     <div class="container">
-        <div class="row">
-        
-            <div class="col-xl-3 col-lg-4 col-md-5">
-                <div class="form-group">
-                    <label for="groups">Group</label>
-                    <select class="form-control" id="groups" url = "">
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select class="form-control" id="categories" url = "">
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="brand">Brand</label>
-                    <select class="form-control" id="brands" url = "">
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="model">Model</label>
-                    <select class="form-control" id="models" url = "">
-                    </select>
-                </div>
-               
-            </div>
-
-            <div class="col-xl-9 col-lg-8 col-md-7">
-
-                <div class="filter-bar d-flex flex-wrap align-items-center">
-
-                    <div class="sorting">
-                        <select style="display: none;">
-                            <option value="1">Default sorting</option>
-                            <option value="1">Default sorting</option>
-                            <option value="1">Default sorting</option>
-                        </select>
-                        <div class="nice-select" tabindex="0"><span class="current">Default sorting</span>
-                            <ul class="list">
-                                <li data-value="1" class="option selected">Default sorting</li>
-                                <li data-value="1" class="option">Default sorting</li>
-                                <li data-value="1" class="option">Default sorting</li>
-                            </ul>
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-5">
+                    <form method="GET" action=".">
+                        <div class="input-group">
+                            <input class="form-control py-2 border-right-0 border" type="search" name="title_contains" placeholder="Title contains..." />
+                            <span class="input-group-append">
+                            <div class="input-group-text bg-transparent">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            </span>
                         </div>
-                    </div>
 
-
-                    <div class="sorting mr-auto">
-                        <select style="display: none;">
-                            <option value="1">Show 12</option>
-                            <option value="1">Show 12</option>
-                            <option value="1">Show 12</option>
-                        </select>
-
-
-                        <div class="nice-select" tabindex="0"><span class="current">Show 12</span>
-                            <ul class="list">
-                                <li data-value="1" class="option selected">Show 12</li>
-                                <li data-value="1" class="option">Show 12</li>
-                                <li data-value="1" class="option">Show 12</li>
-                            </ul>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="form-control" id="categories" url = "">
+                            </select>
                         </div>
-                    </div>
 
-                    <div>
-                        <div class="input-group filter-bar-search">
-                            <input type="text" placeholder="Search">
-                            <div class="input-group-append">
-                                <button type="button"><i class="ti-search"></i></button>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" class="form-control" name="category">
+                            <option selected>Choose...</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat }}">{{ cat }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="model">Model</label>
+                            <select class="form-control" id="models" url = "">
+                            </select>
+                        </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+
+                <div class="col-xl-9 col-lg-8 col-md-7">
+
+                    <div class="filter-bar d-flex flex-wrap align-items-center">
+
+                        <div class="sorting">
+                            <select style="display: none;">
+                                <option value="1">Default sorting</option>
+                                <option value="1">Default sorting</option>
+                                <option value="1">Default sorting</option>
+                            </select>
+                            <div class="nice-select" tabindex="0"><span class="current">Default sorting</span>
+                                <ul class="list">
+                                    <li data-value="1" class="option selected">Default sorting</li>
+                                    <li data-value="1" class="option">Default sorting</li>
+                                    <li data-value="1" class="option">Default sorting</li>
+                                </ul>
                             </div>
                         </div>
-                    </div>  
-                </div>
 
-                <!-- Home product grid list starts -->
 
-                <section class="lattest-product-area pb-40 category-list">
-                    <div class="row">
-                        {% for item in object_list %}
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card text-center card-product">
-                                <div class="card-product__img">
-                                    <img class="card-img" src="img/product/product1.png" alt="">
-                                    <ul class="card-product__imgOverlay">
-                                    <li><button><i class="ti-search"></i></button></li>
-                                    <li><button><i class="ti-shopping-cart"></i></button></li>
-                                    <li><button><i class="ti-heart"></i></button></li>
-                                    </ul>
-                                </div>
-                                <div class="card-body">
-                                    <p>{{item.category.name}}</p>
-                                    <h4 class="card-product__title"><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h4>
-                                    <p class="card-product__price">{{ item.price }}</p>
-                                </div>
+                        <div class="sorting mr-auto">
+                            <select style="display: none;">
+                                <option value="1">Show 12</option>
+                                <option value="1">Show 12</option>
+                                <option value="1">Show 12</option>
+                            </select>
+
+
+                            <div class="nice-select" tabindex="0"><span class="current">Show 12</span>
+                                <ul class="list">
+                                    <li data-value="1" class="option selected">Show 12</li>
+                                    <li data-value="1" class="option">Show 12</li>
+                                    <li data-value="1" class="option">Show 12</li>
+                                </ul>
                             </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Home product grid list endss -->
-                {% include 'supercar/inc.pagination.html'%}
 
+                        <div>
+                            <div class="input-group filter-bar-search">
+                                <input type="text" placeholder="Search">
+                                <div class="input-group-append">
+                                    <button type="button"><i class="ti-search"></i></button>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+
+                    <!-- Home product grid list starts -->
+
+                    <section class="lattest-product-area pb-40 category-list">
+                        <div class="row">
+                            {% for item in object_list %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card text-center card-product">
+                                    <div class="card-product__img">
+                                        <img class="card-img" src="img/product/product1.png" alt="">
+                                        <ul class="card-product__imgOverlay">
+                                        <li><button><i class="ti-search"></i></button></li>
+                                        <li><button><i class="ti-shopping-cart"></i></button></li>
+                                        <li><button><i class="ti-heart"></i></button></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>{{item.category.name}}</p>
+                                        <h4 class="card-product__title"><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h4>
+                                        <p class="card-product__price">{{ item.price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    <!-- Home product grid list endss -->
+                    {% include 'supercar/inc.pagination.html'%}
+
+                </div>
             </div>
-        </div>
     </div>
 </section>

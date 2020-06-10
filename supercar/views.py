@@ -313,6 +313,20 @@ class HomeView(ListView):
     paginate_by = 24
 
 
+def filter_view(request):
+    object_list = Item.objects.all()
+    title_contains_query = request.GET.get('title_contains')
+    categories = Category.objects.all()
+
+    if title_contains_query != '' and title_contains_query is not None:
+        object_list = object_list.filter(name__icontains=title_contains_query)
+    context = {
+        'object_list': object_list
+
+    }
+    return render(request, 'supercar/product-grid.html', context)
+
+
 def is_valid_form(values):
     valid = True
     for field in values:
