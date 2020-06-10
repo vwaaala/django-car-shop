@@ -1,0 +1,23 @@
+def is_valid_filter_queryparam(param):
+    return param != '' and param is not None
+
+
+def Filter(request):
+    qs = Item.objects.all()
+
+    categories = DictCategory.objects.all()
+    category = request.GET.get('category')
+
+    if is_valid_filter_queryparam(category):
+        qs = qs.filter(category__id=category)
+
+    return qs
+
+
+def HomeView(request):
+    qs = Filter(request)
+    context = {
+        'queryset': qs,
+        'category': DictCategory.objects.all()
+    }
+    return render(request, 'home.html', context)
