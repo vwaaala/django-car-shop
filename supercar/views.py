@@ -10,10 +10,11 @@ from django.http import JsonResponse
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import (Item, DictCategory, Order, OrderItem,
                      Address, Payment, Coupon, Refund, UserProfile)
-
+from .filters import ItemFilter
 import random
 import string
 import stripe
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -72,13 +73,12 @@ class CheckoutView(View):
                         'shipping_address')
                     shipping_address2 = form.cleaned_data.get(
                         'shipping_address2')
-                    shipping_country = form.cleaned_data.get(
-                        'shipping_country')
+                    # shipping_country = form.cleaned_data.get('shipping_country')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
 
-                    if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
+                    if is_valid_form([shipping_address1, shipping_zip]):
                         shipping_address = Address(user=self.request.user, street_address=shipping_address1,
-                                                   apartment_address=shipping_address2, country=shipping_country, zip=shipping_zip, address_type='S')
+                                                   apartment_address=shipping_address2, zip=shipping_zip, address_type='S')
                         shipping_address.save()
 
                         order.shipping_address = shipping_address
@@ -126,16 +126,14 @@ class CheckoutView(View):
                         'billing_address')
                     billing_address2 = form.cleaned_data.get(
                         'billing_address2')
-                    billing_country = form.cleaned_data.get(
-                        'billing_country')
+                    # billing_country = form.cleaned_data.get('billing_country')
                     billing_zip = form.cleaned_data.get('billing_zip')
 
-                    if is_valid_form([billing_address1, billing_country, billing_zip]):
+                    if is_valid_form([billing_address1, billing_zip]):
                         billing_address = Address(
                             user=self.request.user,
                             street_address=billing_address1,
                             apartment_address=billing_address2,
-                            country=billing_country,
                             zip=billing_zip,
                             address_type='B'
                         )
@@ -312,19 +310,11 @@ class HomeView(ListView):
     template_name = 'supercar/home.html'
     paginate_by = 24
 
-
-def filter_view(request):
-    object_list = Item.objects.all()
-    title_contains_query = request.GET.get('title_contains')
-    categories = Category.objects.all()
-
-    if title_contains_query != '' and title_contains_query is not None:
-        object_list = object_list.filter(name__icontains=title_contains_query)
-    context = {
-        'object_list': object_list
-
-    }
-    return render(request, 'supercar/product-grid.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = ItemFilter(
+            self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 def is_valid_form(values):
